@@ -14,23 +14,61 @@ import com.mycompany.products.dto.ProductRequest;
 import com.mycompany.products.dto.ProductResponse;
 import com.mycompany.products.service.ProductService;
 
-import lombok.AllArgsConstructor;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/product")
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Tag(name = "Producto", description = "Descripcion personalizada del controller producto")
 public class ProductoController {
 
     private final ProductService productService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation( summary = "Registrar producto", 
+    description ="Metodo encargado de registrar un producto",
+    tags = {"Producto"},
+    requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+        description= "Request del producto",
+        required = true,
+        content = @Content(
+            mediaType = "application/json",
+            schema = @Schema(implementation = ProductRequest.class)
+        )
+    ),
+    responses = {
+        @ApiResponse(
+            responseCode = "201",
+            description = "Create"
+        )
+    }
+    )
     public void addProduct(@RequestBody ProductRequest productRequest) {
         this.productService.addProduct(productRequest);
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @Operation( summary = "Listar productos", 
+    description ="Metodo encargado de listar todos los productos",
+    tags = {"Producto"},
+    responses = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successful",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(implementation = ProductResponse.class)
+            )
+        )
+    }
+    )
     public List<ProductResponse> getAllProducts() {
         return this.productService.getAllProducts();
     }

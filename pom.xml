@@ -20,6 +20,7 @@
     <module>orders-service</module>
     <module>products-service</module>
     <module>api-gateway</module>
+    <module>api-eureka</module>
   </modules>
 
   <properties>

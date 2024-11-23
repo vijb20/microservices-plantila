@@ -21,3 +21,6 @@ Se agrega la siguiente dependency
 		</dependency>
 luego se agrega una clase OpenApiConfig la cual tiene unas definiciones iniciales del swager
 la ruta por defecto es {local}/swagger-ui.html como ejemplo http://localhost:8081/swagger-ui.html
+
+
+Se agrega el app server eureka

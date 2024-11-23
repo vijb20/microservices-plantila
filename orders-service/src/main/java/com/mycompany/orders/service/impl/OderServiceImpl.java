@@ -30,7 +30,7 @@ public class OderServiceImpl implements OrderService {
         // Check for inventory
         BaseResponse result = this.webClientBuilder.build()
                 .post()
-                .uri("http://localhost:8080/api/inventory/in-stock")
+                .uri("lb://inventory-service/api/inventory/in-stock")
                 .bodyValue(orderRequest.getOrderItems())
                 .retrieve()
                 .bodyToMono(BaseResponse.class)

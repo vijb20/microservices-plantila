@@ -3,6 +3,7 @@ package com.mycompany.products.controller;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +32,7 @@ public class ProductoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Operation( summary = "Registrar producto", 
     description ="Metodo encargado de registrar un producto",
     tags = {"Producto"},
@@ -55,6 +57,7 @@ public class ProductoController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasRole('ROLE_USER')")
     @Operation( summary = "Listar productos", 
     description ="Metodo encargado de listar todos los productos",
     tags = {"Producto"},

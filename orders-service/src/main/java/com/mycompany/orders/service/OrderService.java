@@ -6,7 +6,7 @@ import com.mycompany.orders.dtos.OrderRequest;
 import com.mycompany.orders.dtos.OrderResponse;
 
 public interface OrderService {
-    public void placeOrder(OrderRequest orderRequest);
+    public OrderResponse  placeOrder(OrderRequest orderRequest);
 
     public List<OrderResponse> getAllOrders();
 }

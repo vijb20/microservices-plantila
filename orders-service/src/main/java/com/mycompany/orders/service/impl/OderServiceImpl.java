@@ -26,7 +26,7 @@ public class OderServiceImpl implements OrderService {
     private final WebClient.Builder webClientBuilder;
 
     @Override
-    public void placeOrder(OrderRequest orderRequest) {
+    public OrderResponse placeOrder(OrderRequest orderRequest) {
         // Check for inventory
         BaseResponse result = this.webClientBuilder.build()
                 .post()
@@ -41,7 +41,8 @@ public class OderServiceImpl implements OrderService {
             order.setOrderItems(orderRequest.getOrderItems().stream()
                     .map(orderItemRequest -> mapOrderItemRequestToOrderItem(orderItemRequest, order))
                     .toList());
-            this.orderRepository.save(order);
+            var savedOrder = this.orderRepository.save(order);
+            return mapToOrderResponse(savedOrder);
         } else {
             throw new IllegalArgumentException("Some of the products are not in stock");
         }

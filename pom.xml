@@ -21,6 +21,7 @@
     <module>products-service</module>
     <module>api-gateway</module>
     <module>api-eureka</module>
+    <module>notification-service</module>
   </modules>
 
   <properties>

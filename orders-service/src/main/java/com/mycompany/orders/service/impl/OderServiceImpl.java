@@ -3,6 +3,7 @@ package com.mycompany.orders.service.impl;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -13,8 +14,11 @@ import com.mycompany.orders.dtos.OrderRequest;
 import com.mycompany.orders.dtos.OrderResponse;
 import com.mycompany.orders.enities.Order;
 import com.mycompany.orders.enities.OrderItems;
+import com.mycompany.orders.enums.OrderStatus;
+import com.mycompany.orders.events.OrderEvent;
 import com.mycompany.orders.repositories.OrderRepository;
 import com.mycompany.orders.service.OrderService;
+import com.mycompany.orders.utils.JsonUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +28,8 @@ public class OderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final WebClient.Builder webClientBuilder;
-
+    private final KafkaTemplate<String, String> kafkaTemplate;
+    
     @Override
     public OrderResponse placeOrder(OrderRequest orderRequest) {
         // Check for inventory
@@ -42,6 +47,10 @@ public class OderServiceImpl implements OrderService {
                     .map(orderItemRequest -> mapOrderItemRequestToOrderItem(orderItemRequest, order))
                     .toList());
             var savedOrder = this.orderRepository.save(order);
+            //Send message to order topic
+            this.kafkaTemplate.send("orders-topic", JsonUtils.toJson(
+                    new OrderEvent(savedOrder.getOrderNumber(), savedOrder.getOrderItems().size(), OrderStatus.PLACED)
+            ));
             return mapToOrderResponse(savedOrder);
         } else {
             throw new IllegalArgumentException("Some of the products are not in stock");

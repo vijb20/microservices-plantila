@@ -11,10 +11,10 @@ import com.mycompany.inventory.entities.Inventory;
 import com.mycompany.inventory.repositories.InventoryRepository;
 import com.mycompany.inventory.service.InventoryService;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService{
     private final InventoryRepository inventoryRepository;
 

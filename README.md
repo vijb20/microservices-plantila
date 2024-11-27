@@ -4,6 +4,8 @@ el proyecto se basa en dos videos
 https://youtu.be/t0D4OPcugyI?si=J-XCr4TKKlXswCsE
 https://youtu.be/pzxtXifloSE?si=xU1O206L8xkw0aJZ
 
+crear las base de datos correspondientes 
+
 Creando el proyecto base o el que va a contener los modulos necesarios para esta plantilla
 https://maven.apache.org/guides/getting-started/maven-in-five-minutes.html
 ir a la seccion CREATING PROJECT y copiar la linea de comando
@@ -24,3 +26,31 @@ la ruta por defecto es {local}/swagger-ui.html como ejemplo http://localhost:808
 
 
 Se agrega el app server eureka
+
+De la seccion 5 se debe cambiar discovery-service por api-eureka en el properties de apigateway
+Se hace porque no existe el proyecto discovery-service
+ANTES
+
+#Log#Discovery Server routes
+spring.cloud.gateway.routes[3].id=discovery-service
+spring.cloud.gateway.routes[3].uri=http://localhost:8761
+spring.cloud.gateway.routes[3].predicates[0]=Path=/eureka/web
+spring.cloud.gateway.routes[3].filters[0]=SetPath=/
+
+#Discovery Server Static routes
+spring.cloud.gateway.routes[4].id=discovery-service-static
+spring.cloud.gateway.routes[4].uri=http://localhost:8761
+spring.cloud.gateway.routes[4].predicates[0]=Path=/eureka/**
+
+AHORA
+
+#Log#Discovery Server routes
+spring.cloud.gateway.routes[3].id=api-eureka
+spring.cloud.gateway.routes[3].uri=http://localhost:8761
+spring.cloud.gateway.routes[3].predicates[0]=Path=/eureka/web
+spring.cloud.gateway.routes[3].filters[0]=SetPath=/
+
+#Discovery Server Static routes
+spring.cloud.gateway.routes[4].id=api-eureka-static
+spring.cloud.gateway.routes[4].uri=http://localhost:8761
+spring.cloud.gateway.routes[4].predicates[0]=Path=/eureka/**
